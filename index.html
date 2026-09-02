@@ -1,139 +1,160 @@
-><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chakma Ludo Tournament</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cloudflare.com">
-    <!-- Firebase SDKs (v8) -->
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
-    <style>
-        .ludo-grid { display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(15, 1fr); aspect-ratio: 1; }
-        .star-tile { background-image: url('https://flaticon.com'); background-size: 70%; background-repeat: no-repeat; background-position: center; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chakma Ludo - Tournament Edition</title>
+  
+  <!-- Tailwind CSS For Professional & Smooth UI UI -->
+  <script src="https://jsdelivr.net"></script>
+  
+  <!-- FontAwesome Icons for Beautiful Avatar and Buttons -->
+  <link rel="stylesheet" href="https://cloudflare.com">
+  
+  <!-- Firebase Compat SDKs (Ensure these match your scripts) -->
+  <script src="https://gstatic.com"></script>
+  <script src="https://gstatic.com"></script>
+  <script src="https://gstatic.com"></script>
 </head>
-<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col max-w-md mx-auto shadow-2xl relative overflow-x-hidden">
+<body class="bg-gray-900 text-white font-sans min-h-screen pb-10">
 
-    <!-- Custom Toast Notification -->
-    <div id="toastAlert" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hidden z-50 transition-all duration-300"></div>
+  <!-- Header Section -->
+  <header class="bg-indigo-700 text-center py-6 shadow-md rounded-b-2xl">
+    <h1 class="text-3xl font-bold tracking-wide uppercase">Chakma Ludo</h1>
+    <p class="text-indigo-200 text-sm mt-1">Tournament Edition</p>
+  </header>
 
-    <!-- Auth Screen -->
-    <div id="authScreen" class="flex flex-col items-center justify-center flex-grow p-6 bg-gradient-to-b from-gray-800 to-gray-900">
-        <div class="text-center mb-8">
-            <i class="fa-solid fa-dice-five text-6xl text-emerald-500 animate-bounce"></i>
-            <h1 class="text-3xl font-extrabold tracking-wider mt-4 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">CHAKMA LUDO</h1>
-            <p class="text-gray-400 text-sm mt-1">Tournament Edition</p>
+  <main class="max-w-md mx-auto px-4 mt-6 space-y-6">
+    
+    <!-- User Profile & Authentication Section -->
+    <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 text-center space-y-4">
+      <div class="flex flex-col items-center space-y-2">
+        <!-- Broken avatar fixed with FontAwesome Icon fallback -->
+        <div id="avatarContainer" class="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center border-2 border-indigo-500 shadow-md">
+          <i class="fa-solid fa-user text-2xl text-gray-400" id="defaultAvatar"></i>
+          <img id="userAvatar" class="w-full h-full rounded-full hidden" alt="Avatar">
         </div>
-        <button id="googleLoginBtn" class="w-full bg-white text-gray-900 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-3 shadow-lg hover:bg-gray-100 transition-all active:scale-95">
-            <img src="https://wikimedia.org" class="w-6 h-6" alt="Google">
-            Sign In with Google
+        <h2 id="playerName" class="text-xl font-semibold text-gray-300">Guest Player</h2>
+      </div>
+
+      <!-- Google Sign In Button Made Compliant & Beautiful -->
+      <button id="googleSignInBtn" class="w-full flex items-center justify-center gap-3 bg-white text-gray-700 font-medium px-4 py-2.5 rounded-xl shadow transition active:scale-95 hover:bg-gray-100">
+        <svg class="w-5 h-5" viewBox="0 0 24 24">
+          <path fill="#EA4335" d="M12 5.04c1.61 0 3.06.56 4.2 1.64l3.15-3.15C17.45 1.67 14.96 1 12 1 7.35 1 3.4 3.65 1.5 7.5l3.6 2.8C6.01 7.15 8.79 5.04 12 5.04z"/>
+          <path fill="#4285F4" d="M23.5 12.25c0-.82-.07-1.6-.21-2.35H12v4.45h6.45c-.28 1.47-1.11 2.71-2.36 3.55l3.6 2.8c2.1-1.94 3.31-4.8 3.31-8.45z"/>
+          <path fill="#FBBC05" d="M5.1 14.7c-.24-.71-.38-1.47-.38-2.25s.14-1.54.38-2.25L1.5 7.4C.54 9.3 0 11.43 0 13.7s.54 4.4 1.5 6.3l3.6-2.9z"/>
+          <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.6-2.8c-1.1.74-2.52 1.18-4.36 1.18-3.21 0-5.99-2.11-6.95-5.26l-3.6 2.8C3.4 20.35 7.35 23 12 23z"/>
+        </svg>
+        Sign In with Google
+      </button>
+
+      <!-- Navigation Tabs -->
+      <div class="flex justify-center gap-2 pt-2">
+        <button class="flex-1 bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg font-medium text-sm transition">Money</button>
+        <button class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded-lg font-medium text-sm transition">Lobby</button>
+        <button class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded-lg font-medium text-sm transition">Social & Chat</button>
+      </div>
+    </section>
+
+    <!-- Active Tournaments Section -->
+    <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 space-y-4">
+      <h3 class="text-lg font-bold border-b border-gray-700 pb-2 flex items-center gap-2 text-indigo-400">
+        <i class="fa-solid fa-trophy"></i> Active Tournaments
+      </h3>
+      <div id="tournamentList" class="text-center py-6 text-gray-500 text-sm italic">
+        No live matches available right now.
+      </div>
+    </section>
+
+    <!-- Global Live Chat Section -->
+    <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 space-y-3">
+      <h3 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
+        <i class="fa-solid fa-comments"></i> Global Live Chat
+      </h3>
+      <div class="flex gap-2">
+        <input type="text" placeholder="Type a message..." class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-white">
+        <button class="bg-indigo-600 hover:bg-indigo-500 px-4 rounded-xl transition">
+          <i class="fa-solid fa-paper-plane"></i>
         </button>
-    </div>
+      </div>
+    </section>
 
-    <!-- Main Dashboard -->
-    <div id="dashboardScreen" class="hidden flex-col flex-grow">
-        <!-- Header -->
-        <header class="bg-gray-800 p-4 rounded-b-2xl border-b border-gray-700 flex items-center justify-between shadow-md">
-            <div class="flex items-center gap-3">
-                <img id="userAvatar" src="" alt="Avatar" class="w-11 h-11 rounded-full border-2 border-emerald-500 shadow-md">
-                <div>
-                    <h2 id="userName" class="font-bold text-sm truncate max-w-[120px]">Player</h2>
-                    <span class="text-xs text-emerald-400 font-semibold"><i class="fa-solid fa-wallet mr-1"></i>₹<span id="userWallet">0</span></span>
-                </div>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="toggleSection('walletModal')" class="bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"><i class="fa-solid fa-plus mr-1"></i>Money</button>
-                <button id="logoutBtn" class="text-gray-400 hover:text-red-400 p-2"><i class="fa-solid fa-right-from-bracket text-lg"></i></button>
-            </div>
-        </header>
+    <!-- Follow Other Players Section -->
+    <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 space-y-3">
+      <h3 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
+        <i class="fa-solid fa-user-plus"></i> Follow Other Players
+      </h3>
+      <div class="flex gap-2">
+        <input type="text" placeholder="Enter Player Name..." class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-white">
+        <button class="bg-indigo-600 hover:bg-indigo-500 px-5 rounded-xl font-medium text-sm transition">Follow</button>
+      </div>
+    </section>
 
-        <!-- Social & Tabs Navbar -->
-        <div class="flex bg-gray-800 border-b border-gray-700">
-            <button onclick="switchTab('lobby')" id="tab-lobby" class="flex-1 py-3 text-center font-bold text-sm border-b-2 border-emerald-500 text-emerald-400">Lobby</button>
-            <button onclick="switchTab('social')" id="tab-social" class="flex-1 py-3 text-center font-bold text-sm border-b-2 border-transparent text-gray-400">Social & Chat</button>
+    <!-- In-App Wallet Section -->
+    <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 space-y-4">
+      <h3 class="text-lg font-bold border-b border-gray-700 pb-2 flex items-center gap-2 text-indigo-400">
+        <i class="fa-solid fa-wallet"></i> In-App Wallet
+      </h3>
+      
+      <div class="bg-gray-900 p-3 rounded-xl flex justify-between items-center border border-gray-700">
+        <span class="text-gray-400 text-sm">Available Balance:</span>
+        <span id="walletBalance" class="text-xl font-bold text-green-400">₹0</span>
+      </div>
+
+      <!-- Add Demo Money -->
+      <div class="space-y-1.5">
+        <label class="text-xs text-gray-400 font-medium">Add Demo Money (₹)</label>
+        <div class="flex gap-2">
+          <input type="number" value="100" class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-indigo-500">
+          <button class="bg-green-600 hover:bg-green-500 px-5 rounded-xl text-sm font-medium transition">Deposit</button>
         </div>
+      </div>
 
-        <!-- Tab Content: Lobby -->
-        <div id="lobbyTab" class="p-4 space-y-4 flex-grow overflow-y-auto pb-20">
-            <h3 class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400"><i class="fa-solid fa-trophy mr-2 text-yellow-400"></i>Active Tournaments</h3>
-            <div id="matchesList" class="space-y-3">
-                <!-- Matches load dynamically -->
-                <div class="text-center text-gray-500 text-sm py-8">No live matches available right now.</div>
-            </div>
+      <!-- Withdraw Money System with Validation -->
+      <div class="space-y-1.5">
+        <label class="text-xs text-gray-400 font-medium">Withdraw Money (₹)</label>
+        <div class="flex gap-2">
+          <input id="withdrawAmount" type="number" placeholder="Min ₹50" class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-indigo-500">
+          <button id="withdrawBtn" class="bg-red-600 hover:bg-red-500 px-5 rounded-xl text-sm font-medium transition">Withdraw</button>
         </div>
+        <!-- Real-time error handling message container -->
+        <p id="withdrawError" class="text-xs text-red-400 font-medium mt-1 hidden"></p>
+      </div>
 
-        <!-- Tab Content: Social & Chat -->
-        <div id="socialTab" class="hidden p-4 flex-col flex-grow overflow-y-auto pb-20 space-y-4">
-            <!-- Global Chat Box -->
-            <div class="bg-gray-800 rounded-xl p-3 border border-gray-700 flex flex-col h-64 shadow-inner">
-                <h4 class="text-xs font-bold text-cyan-400 mb-2 border-b border-gray-700 pb-1"><i class="fa-solid fa-comments mr-1"></i>Global Live Chat</h4>
-                <div id="chatMessages" class="flex-grow overflow-y-auto text-sm space-y-2 mb-2 pr-1"></div>
-                <div class="flex gap-2">
-                    <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
-                    <button onclick="sendChatMessage()" class="bg-cyan-600 px-3 py-1.5 rounded-lg text-sm font-bold"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
-            </div>
-            <!-- Follow System -->
-            <div class="bg-gray-800 rounded-xl p-3 border border-gray-700">
-                <h4 class="text-xs font-bold text-emerald-400 mb-3"><i class="fa-solid fa-user-plus mr-1"></i>Follow Other Players</h4>
-                <div class="flex gap-2 mb-3">
-                    <input type="text" id="searchUserField" placeholder="Enter Player Name..." class="flex-grow bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-xs focus:outline-none">
-                    <button onclick="followUser()" class="bg-emerald-600 px-3 py-1.5 rounded-lg text-xs font-bold">Follow</button>
-                </div>
-                <div id="followList" class="space-y-2 text-xs">
-                    <!-- Followed list loads here -->
-                </div>
-            </div>
-        </div>
-    </div>
+      <div class="flex justify-between items-center pt-2 text-sm text-gray-400">
+        <span>Room: <strong class="text-white">0000</strong></span>
+        <button class="bg-gray-700 hover:bg-gray-600 px-4 py-1.5 rounded-lg text-xs text-white font-medium transition">Leave</button>
+      </div>
+    </section>
 
-    <!-- Financial Wallet Modal -->
-    <div id="walletModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 items-center justify-center p-6">
-        <div class="bg-gray-800 w-full max-w-xs rounded-2xl p-5 border border-gray-700 shadow-xl relative animate-fade-in">
-            <button onclick="toggleSection('walletModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-lg font-bold border-b border-gray-700 pb-2 mb-4 text-center text-emerald-400"><i class="fa-solid fa-wallet mr-2"></i>In-App Wallet</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Add Demo Money (₹)</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="depositAmount" value="100" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2 text-sm focus:outline-none text-center">
-                        <button onclick="handleDeposit()" class="bg-emerald-600 px-4 rounded-xl text-xs font-bold">Deposit</button>
-                    </div>
-                </div>
-                <div class="border-t border-gray-700 pt-3">
-                    <label class="block text-xs text-gray-400 mb-1">Withdraw Money (₹)</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="withdrawAmount" placeholder="Min ₹50" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2 text-sm focus:outline-none text-center">
-                        <button onclick="handleWithdrawal()" class="bg-red-600 px-4 rounded-xl text-xs font-bold">Withdraw</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  </main>
 
-    <!-- Ludo Gameplay Canvas Screen -->
-    <div id="gameplayScreen" class="hidden fixed inset-0 bg-gray-900 z-40 flex flex-col p-4 max-w-md mx-auto justify-center items-center">
-        <div class="w-full flex justify-between items-center mb-4">
-            <span class="text-sm font-bold text-cyan-400"><i class="fa-solid fa-gamepad mr-1"></i> Room: <span id="currentRoomId">0000</span></span>
-            <button onclick="exitGameScreen()" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-door-open mr-1"></i>Leave</button>
-        </div>
-        
-        <!-- Interactive Ludo Board -->
-        <div id="ludoBoard" class="w-full bg-white text-black p-1 rounded-xl shadow-2xl ludo-grid border-4 border-gray-700">
-            <!-- Grid Generation Logic Executed in Script -->
-        </div>
+  <script>
+    // --- STEP 3 INTERACTION: WALLET WITHDRAWAL VALIDATION LOGIC ---
+    const withdrawInput = document.getElementById('withdrawAmount');
+    const withdrawBtn = document.getElementById('withdrawBtn');
+    const errorMsg = document.getElementById('withdrawError');
 
-        <!-- Dice Rolling Controls -->
-        <div class="w-full mt-6 bg-gray-800 rounded-2xl p-4 border border-gray-700 flex items-center justify-around shadow-lg">
-            <div class="text-center">
-                <p class="text-xs text-gray-400">Current Turn</p>
-                <div id="turnIndicator" class="text-sm font-black text-red-500 mt-1">RED PLAYER</div>
-            </div>
-            <button id="rollDiceBtn" onclick="rollDicePhysics()" class="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-extrabold px-6 py-3 rounded-xl shadow-md hover:brightness-110 active:scale-95 transition-all text-sm flex items-center gap-2">
-                <i class="fa-solid fa-dice text-lg animate-spin-slow"></i> ROLL DICE
-            </button
+    withdrawBtn.addEventListener('click', () => {
+      const amount = parseFloat(withdrawInput.value);
+      
+      if (isNaN(amount) || amount === "") {
+        errorMsg.textContent = "Please enter an amount.";
+        errorMsg.classList.remove('hidden');
+      } else if (amount < 50) {
+        // Smoothly pops up error message below input box
+        errorMsg.textContent = "Minimum withdrawal limit ₹50 hai.";
+        errorMsg.classList.remove('hidden');
+      } else {
+        errorMsg.classList.add('hidden');
+        alert("Withdrawal request of ₹" + amount + " submitted successfully!");
+        // Yahan par aap apna Firebase push code add kar sakte hain
+      }
+    });
+
+    // --- PASTE YOUR FIREBASE INITIALIZATION CONFIGURATION HERE ---
+    // const firebaseConfig = { ... };
+    // firebase.initializeApp(firebaseConfig);
+  </script>
+</body>
+</html>
