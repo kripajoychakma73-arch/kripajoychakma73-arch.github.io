@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Chakma Ludo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Firebase SDKs (v8) -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col max-w-md mx-auto shadow-2xl relative">
+
+    <!-- Simple Gateway Authentication Overlay -->
+    <div id="adminGate" class="fixed inset-0 bg-gray-900 z-50 flex flex-col items-center justify-center p-6">
+        <div class="w-full bg-gray-800 border border-gray-700 rounded-2xl p-6 shadow-xl text-center">
+            <i class="fa-solid fa-lock-open text-4xl text-emerald-400 mb-2"></i>
+            <h2 class="text-xl font-bold mb-4">Secure Admin Terminal</h2>
+            <input type="password" id="adminPassKey" placeholder="Enter Secure Password" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3 text-center text-sm mb-4 focus:outline-none focus:border-emerald-500">
+            <button onclick="verifyGateCredentials()" class="w-full bg-emerald-600 font-bold py-2.5 rounded-xl text-sm transition-all hover:bg-emerald-500">Access Dashboard</button>
+        </div>
+    </div>
+
+    <!-- Active Management Panels -->
+    <header class="bg-gray-800 p-4 border-b border-gray-700 shadow-md">
+        <h1 class="text-lg font-black tracking-wider text-emerald-400"><i class="fa-solid fa-screwdriver-wrench mr-2"></i>LUDO CONTROL PANEL</h1>
+    </header>
+
+    <main class="p-4 space-y-6 flex-grow overflow-y-auto pb-10">
+        <!-- Tournament Generation Module Form -->
+        <div class="bg-gray-800 border border-gray-700 rounded-2xl p-4 shadow-md">
+            <h3 class="text-sm font-bold text-cyan-400 border-b border-gray-700 pb-2 mb-4"><i class="fa-solid fa-plus-circle mr-1"></i>Create New Ludo Match</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Match/Tournament Name</label>
+                    <input type="text" id="mName" placeholder="e.g., Sunday Mega Pool" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2 text-xs focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Entry Fee (₹)</label>
+                        <input type="number" id="mFee" value="10" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2 text-xs focus:outline-none text-center">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Room Code</label>
+                        <input type="text" id="mCode" placeholder="Auto / Manual" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2 text-xs focus:outline-none text-center font-mono">
+                    </div>
+                </div>
+                <button onclick="commitNewMatch()" class="w-full bg-cyan-600 font-bold py-2 rounded-xl text-xs transition-all hover:bg-cyan-500 shadow-md mt-2">Publish Match Live</button>
+            </div>
+        </div>
+
+        <!-- Automatic Settlement Module Engine Table -->
+        <div class="bg-gray-800 border border-gray-700 rounded-2xl p-4 shadow-md">
+            <h3 class="text-sm font-bold text-yellow-400 border-b border-gray-700 pb-2 mb-3"><i class="fa-solid fa-calculator mr-1"></i>Settle ongoing matches (10% Commission)</h3>
+            <div id="adminMatchesList" class="space-y-3 text-xs">
+                <!-- Administrative actions fetch dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Core Configuration Injected Automatically
+        const firebaseConfig = {
+          apiKey: "AIzaSyDJcvicOzv-lrqDp9ALDsB5WRvsmg0RgS8",
+          authDomain: "ludo-janong.firebaseapp.com",
+          databaseURL: "https://ludo-janong-default-rtdb.firebaseio.com",
+          projectId: "ludo-janong",
+          storageBucket: "ludo-janong.firebasestorage.app",
+          messagingSenderId: "484632949978",
+          appId: "1:484632949978:web:8a228c9303444dfed461e3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function verifyGateCredentials() {
+            const key = document.getElementById('adminPassKey').value;
+            // Simple default admin password gate
+            if(key === "admin123" || key === "admin") {
+                document.getElementById('adminGate').classList.add('hidden');
+                loadAdministrativeData();
+            } else {
+                alert("Invalid terminal access key token!");
+            }
+        }
+
+        function commitNewMatch() {
+            const name = document.getElementById('mName').value.trim();
+            const fee = parseInt(document.getElementById('mFee').value);
+            const code = document.getElementById('mCode').value.trim() || Math.floor(1000 + Math.random() * 9000).toString();
+
+            if(!name || !fee) { alert("Fields missing!"); return; }
+
+            db.ref(`matches/${code}`).set({
+                name: name,
+                entryFee: fee,
+                roomCode: code,
+                status: 'active'
+            }).then(() => {
+                alert("Match live synchronized successfully!");
+                document.getElementById('mName').value = '';
+                document.getElementById('mCode').value = '';
+            });
+        }
+
+        function loadAdministrativeData() {
+            db.ref('matches').on('value', snapshot => {
+                const wrapper = document.getElementById('adminMatchesList');
+                wrapper.innerHTML = '';
+                if(!snapshot.exists()) { wrapper.innerHTML = '<p class="text-gray-500 italic">No matches to settle.</p>'; return; }
+                
+                snapshot.forEach(child => {
+                    const match = child.val();
+                    const div = document.createElement('div');
+                    div.className = "bg-gray-900 border border-gray-800 rounded-xl p-3 space-y-2";
+                    div.innerHTML = `
+                        <div class="flex justify-between font-bold">
+                            <span>${match.name} (Code: ${match.roomCode})</span>
+                            <span class="text-emerald-400">Pool Fee: ₹${match.entryFee}</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Winner User UID" id="win-${match.roomCode}" class="flex-grow bg-gray-800 border border-gray-700 rounded-lg px-2 py-1 text-xs">
+                            <button onclick="settleMatchPayout('${match.roomCode}', ${match.entryFee})" class="bg-emerald-600 px-3 py-1 rounded-lg font-bold">Declare Win</button>
+                        </div>
+                    `;
+                    wrapper.appendChild(div);
+                });
+            });
+        }
+
+        function settleMatchPayout(roomCode, entryFee) {
+            const winnerUid = document.getElementById(`win-${roomCode}`).value.trim();
+            if(!winnerUid) { alert("Provide a valid winning user UID!"); return; }
+
+            // AUTO-COMMISSION MATHEMATICAL CALCULATION ENGINE LAWS
+            const totalPool = entryFee * 2; // Assuming 2 Player Standard Room structure base
+            const commission = totalPool * 0.10; // Flat 10% structural auto cut
+            const netWinnings = totalPool - commission; // 90% payout remaining distributed safely
+
+            db.ref(`users/${winnerUid}/wallet`).transaction(currentBalance => {
+                return (currentBalance || 0) + netWinnings;
+            }).then(() => {
+                // Delete active match node upon processing completion instantly
+                db.ref(`matches/${roomCode}`).remove();
+                alert(`Match cleared! 10% Commission (₹${commission}) cut. Winner credited with ₹${netWinnings}.`);
+            }).catch(err => alert(err.message));
+        }
+    </script>
+</body>
+</html>
