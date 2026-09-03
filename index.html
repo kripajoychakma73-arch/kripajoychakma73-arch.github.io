@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -155,6 +154,77 @@
     // --- PASTE YOUR FIREBASE INITIALIZATION CONFIGURATION HERE ---
     // const firebaseConfig = { ... };
     // firebase.initializeApp(firebaseConfig);
-  </script>
+  
+// Firebase SDK Modules ko Import karein
+import { initializeApp } from "https://gstatic.com";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://gstatic.com";
+import { getDatabase, ref, set, onValue, push } from "https://gstatic.com";
+
+// ✅ Aapka Real Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDJcvicOzv-lrqDp9ALDsB5WRvsmg0RgS8",
+  authDomain: "://firebaseapp.com",
+  databaseURL: "https://firebaseio.com",
+  projectId: "ludo-janong",
+  storageBucket: "ludo-janong.firebasestorage.app",
+  messagingSenderId: "484632949978",
+  appId: "1:484632949978:web:8a228c9303444dfed461e3"
+};
+
+// Firebase ko Initialize karein
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const database = getDatabase(app);
+const provider = new GoogleAuthProvider();
+
+let currentUser = null;
+
+// 1. Google Sign-In Logic
+const loginBtn = document.getElementById('googleSignInBtn');
+if (loginBtn) {
+  loginBtn.addEventListener('click', () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log("Login Successful!", result.user);
+      })
+      .catch((error) => {
+        console.error("Login Error:", error.message);
+        alert("Login nahi hua: " + error.message);
+      });
+  });
+}
+
+// 2. User State Status Check
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+    const nameEl = document.getElementById('playerName');
+    if (nameEl) nameEl.innerText = user.displayName;
+    
+    const avatarImg = document.getElementById('userAvatar');
+    if (avatarImg) {
+      avatarImg.src = user.photoURL;
+      avatarImg.style.display = "block"; 
+    }
+    loadWalletBalance(user.uid);
+  } else {
+    currentUser = null;
+    if (document.getElementById('playerName')) document.getElementById('playerName').innerText = "Guest Player";
+  }
+});
+
+// 3. Wallet Balance Logic
+function loadWalletBalance(uid) {
+  const balanceRef = ref(database, 'users/' + uid + '/balance');
+  onValue(balanceRef, (snapshot) => {
+    const data = snapshot.val();
+    const balanceEl = document.getElementById('wallet-balance');
+    if (balanceEl) balanceEl.innerText = data || 0;
+  });
+}
+</script>
 </body>
 </html>
+
+             
+
