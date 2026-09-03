@@ -178,20 +178,26 @@ const database = getDatabase(app);
 const provider = new GoogleAuthProvider();
 
 let currentUser = null;
-// 1. Google Sign-In Logic
+// 1. Google Sign-In Logic (Mobile Direct Redirect Method)
 const loginBtn = document.getElementById('googleSignInBtn');
 if (loginBtn) {
   loginBtn.addEventListener('click', () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        console.log("Login Successful!", result.user);
+    import("https://gstatic.com")
+      .then((m) => {
+        m.signInWithRedirect(auth, provider);
       })
-      .catch((error) => {
-        console.error("Login Error:", error.message);
-        alert("Login nahi hua: " + error.message);
-      });
+      .catch((err) => alert("Error: " + err.message));
   });
 }
+
+// Redirect Result load karne ke liye
+import("https://gstatic.com")
+  .then((m) => m.getRedirectResult(auth))
+  .then((res) => {
+    if (res) console.log("Login Success!");
+  })
+  .catch((err) => console.log(err.message));
+
 
 
 // 2. User State Status Check
