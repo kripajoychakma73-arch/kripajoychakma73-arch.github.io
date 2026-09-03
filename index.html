@@ -172,54 +172,75 @@ const firebaseConfig = {
 };
 
 // Firebase ko Initialize karein
+<script type="module">
+// Firebase SDK Modules ko sahi se Import karein
+import { initializeApp } from "https://gstatic.com";
+import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged } from "https://gstatic.com";
+import { getDatabase, ref, set, onValue } from "https://gstatic.com";
+
+// ✅ Aapka Real Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDJcvicOzv-lrqDp9ALDsB5WRvsmg0RgS8",
+  authDomain: "://firebaseapp.com",
+  databaseURL: "https://firebaseio.com",
+  projectId: "ludo-janong",
+  storageBucket: "ludo-janong.firebasestorage.app",
+  messagingSenderId: "484632949978",
+  appId: "1:484632949978:web:8a228c9303444dfed461e3"
+};
+
+// Firebase ko Initialize karein
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase(app);
 const provider = new GoogleAuthProvider();
 
 let currentUser = null;
-// 1. Google Sign-In Logic (Mobile Direct Redirect Method)
+
+// 1. Google Sign-In Logic (Mobile ke liye Direct Redirect Method)
 const loginBtn = document.getElementById('googleSignInBtn');
 if (loginBtn) {
   loginBtn.addEventListener('click', () => {
-    import("https://gstatic.com")
-      .then((m) => {
-        m.signInWithRedirect(auth, provider);
-      })
-      .catch((err) => alert("Error: " + err.message));
+    signInWithRedirect(auth, provider)
+      .catch((error) => alert("Login Error: " + error.message));
   });
 }
 
-// Redirect Result load karne ke liye
-import("https://gstatic.com")
-  .then((m) => m.getRedirectResult(auth))
-  .then((res) => {
-    if (res) console.log("Login Success!");
-  })
-  .catch((err) => console.log(err.message));
+// 2. Redirect ka Result Check karna (Jab login karke user wapas aaye)
+getRedirectResult(auth)
+  .then((result) => {
+    if (result) {
+      console.log("Redirect Login Successful!", result.user);
+    }
+  }).catch((error) => {
+    console.error("Redirect Error:", error.message);
+  });
 
-
-
-// 2. User State Status Check
+// 3. User State Status Check (UI update karne ke liye)
 onAuthStateChanged(auth, (user) => {
   if (user) {
     currentUser = user;
+    
+    // UI par Player Name badalna
     const nameEl = document.getElementById('playerName');
     if (nameEl) nameEl.innerText = user.displayName;
     
-    const avatarImg = document.getElementById('userAvatar');
+    // Avatar image update karna
+    const avatarImg = document.getElementById('userAvatar') || document.querySelector('[alt="Avatar"]');
     if (avatarImg) {
       avatarImg.src = user.photoURL;
-      avatarImg.style.display = "block"; 
     }
+
+    // Database se Wallet Balance load karna
     loadWalletBalance(user.uid);
   } else {
     currentUser = null;
-    if (document.getElementById('playerName')) document.getElementById('playerName').innerText = "Guest Player";
+    const nameEl = document.getElementById('playerName');
+    if (nameEl) nameEl.innerText = "Guest Player";
   }
 });
 
-// 3. Wallet Balance Logic
+// 4. Wallet Balance Logic
 function loadWalletBalance(uid) {
   const balanceRef = ref(database, 'users/' + uid + '/balance');
   onValue(balanceRef, (snapshot) => {
@@ -229,8 +250,5 @@ function loadWalletBalance(uid) {
   });
 }
 </script>
-</body>
-</html>
 
-             
 
