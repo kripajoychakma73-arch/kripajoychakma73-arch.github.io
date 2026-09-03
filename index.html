@@ -178,17 +178,6 @@ import { initializeApp } from "https://gstatic.com";
 import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged } from "https://gstatic.com";
 import { getDatabase, ref, set, onValue } from "https://gstatic.com";
 
-// ✅ Aapka Real Firebase Configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDJcvicOzv-lrqDp9ALDsB5WRvsmg0RgS8",
-  authDomain: "://firebaseapp.com",
-  databaseURL: "https://firebaseio.com",
-  projectId: "ludo-janong",
-  storageBucket: "ludo-janong.firebasestorage.app",
-  messagingSenderId: "484632949978",
-  appId: "1:484632949978:web:8a228c9303444dfed461e3"
-};
-
 // Firebase ko Initialize karein
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
