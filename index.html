@@ -178,7 +178,6 @@ const database = getDatabase(app);
 const provider = new GoogleAuthProvider();
 
 let currentUser = null;
-
 // 1. Google Sign-In Logic
 const loginBtn = document.getElementById('googleSignInBtn');
 if (loginBtn) {
@@ -193,6 +192,7 @@ if (loginBtn) {
       });
   });
 }
+
 
 // 2. User State Status Check
 onAuthStateChanged(auth, (user) => {
