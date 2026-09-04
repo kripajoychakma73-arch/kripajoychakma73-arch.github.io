@@ -11,7 +11,7 @@
   <!-- FIX: Complete FontAwesome Icons CDN -->
   <link rel="stylesheet" href="https://cloudflare.com">
   
-  <!-- FIX: Complete Firebase Compat SDKs (Sabse stable aur aasan static HTML ke liye) -->
+  <!-- FIX: Complete Firebase Compat SDKs -->
   <script src="https://gstatic.com"></script>
   <script src="https://gstatic.com"></script>
   <script src="https://gstatic.com"></script>
@@ -128,11 +128,11 @@
   </main>
 
   <script>
-    // --- INTEGRATED FIREBASE CONFIGURATION ---
+    // --- FIXED: COMPLETE FIREBASE CONFIGURATION ---
     const firebaseConfig = {
       apiKey: "AIzaSyDJcvicOzv-lrqDp9ALDsB5WRvsmg0RgS8",
-      authDomain: "://firebaseapp.com",
-      databaseURL: "https://firebaseio.com",
+      authDomain: "ludo-janong.firebaseapp.com",
+      databaseURL: "https://ludo-janong-default-rtdb.firebaseio.com",
       projectId: "ludo-janong",
       storageBucket: "ludo-janong.firebasestorage.app",
       messagingSenderId: "484632949978",
@@ -159,7 +159,6 @@
       auth.signInWithPopup(provider)
         .then((result) => {
           const user = result.user;
-          // Profile update on successful login
           playerName.textContent = user.displayName;
           userAvatar.src = user.photoURL;
           userAvatar.classList.remove('hidden');
