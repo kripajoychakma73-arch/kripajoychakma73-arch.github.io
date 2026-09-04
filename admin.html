@@ -3,40 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chakma Ludo - Tournament Edition</title>
+  <title>Chakma Ludo - Admin Dashboard</title>
   
-  <!-- Tailwind CSS CDN -->
+  <!-- FIX: Complete Working CDN Links -->
   <script src="https://jsdelivr.net"></script>
-  
-  <!-- FontAwesome Icons CDN -->
   <link rel="stylesheet" href="https://cloudflare.com">
   
-  <!-- Firebase Compat SDKs (HTML ke liye sabse best aur aasan) -->
+  <!-- FIX: Complete Firebase Compat SDKs -->
   <script src="https://gstatic.com"></script>
   <script src="https://gstatic.com"></script>
   <script src="https://gstatic.com"></script>
 </head>
 <body class="bg-gray-900 text-white font-sans min-h-screen pb-10">
 
-  <!-- Header Section -->
-  <header class="bg-indigo-700 text-center py-6 shadow-md rounded-b-2xl">
-    <h1 class="text-3xl font-bold tracking-wide uppercase">Chakma Ludo</h1>
-    <p class="text-indigo-200 text-sm mt-1">Tournament Edition</p>
+  <!-- Admin Header Section -->
+  <header class="bg-red-700 text-center py-6 shadow-md rounded-b-2xl border-b-4 border-red-900">
+    <h1 class="text-3xl font-bold tracking-wide uppercase"><i class="fa-solid fa-user-shield"></i> Admin Control Panel</h1>
+    <p class="text-red-200 text-sm mt-1">Chakma Ludo - Tournament Management</p>
   </header>
 
   <main class="max-w-md mx-auto px-4 mt-6 space-y-6">
     
-    <!-- User Profile & Authentication Section -->
+    <!-- Admin Authentication Section -->
     <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 text-center space-y-4">
-      <div class="flex flex-col items-center space-y-2">
-        <div id="avatarContainer" class="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center border-2 border-indigo-500 shadow-md">
-          <i class="fa-solid fa-user text-2xl text-gray-400" id="defaultAvatar"></i>
-          <img id="userAvatar" class="w-full h-full rounded-full hidden" alt="Avatar">
-        </div>
-        <h2 id="playerName" class="text-xl font-semibold text-gray-300">Guest Player</h2>
+      <h3 class="text-lg font-bold text-red-400"><i class="fa-solid fa-lock"></i> Admin Verify</h3>
+      <div id="adminProfile" class="hidden flex flex-col items-center space-y-2">
+        <img id="adminAvatar" class="w-16 h-16 rounded-full border-2 border-red-500 shadow-md" alt="Admin Avatar">
+        <h2 id="adminName" class="text-xl font-semibold text-gray-300">Admin</h2>
       </div>
-
-      <!-- Google Sign In Button -->
       <button id="googleSignInBtn" class="w-full flex items-center justify-center gap-3 bg-white text-gray-700 font-medium px-4 py-2.5 rounded-xl shadow transition active:scale-95 hover:bg-gray-100">
         <svg class="w-5 h-5" viewBox="0 0 24 24">
           <path fill="#EA4335" d="M12 5.04c1.61 0 3.06.56 4.2 1.64l3.15-3.15C17.45 1.67 14.96 1 12 1 7.35 1 3.4 3.65 1.5 7.5l3.6 2.8C6.01 7.15 8.79 5.04 12 5.04z"/>
@@ -44,91 +38,48 @@
           <path fill="#FBBC05" d="M5.1 14.7c-.24-.71-.38-1.47-.38-2.25s.14-1.54.38-2.25L1.5 7.4C.54 9.3 0 11.43 0 13.7s.54 4.4 1.5 6.3l3.6-2.9z"/>
           <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.6-2.8c-1.1.74-2.52 1.18-4.36 1.18-3.21 0-5.99-2.11-6.95-5.26l-3.6 2.8C3.4 20.35 7.35 23 12 23z"/>
         </svg>
-        Sign In with Google
+        Sign In as Admin
       </button>
-
-      <!-- Navigation Tabs -->
-      <div class="flex justify-center gap-2 pt-2">
-        <button class="flex-1 bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg font-medium text-sm transition">Money</button>
-        <button class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded-lg font-medium text-sm transition">Lobby</button>
-        <button class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded-lg font-medium text-sm transition">Social & Chat</button>
-      </div>
     </section>
 
-    <!-- Active Tournaments Section -->
+    <!-- Create New Tournament Section -->
     <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 space-y-4">
-      <h3 class="text-lg font-bold border-b border-gray-700 pb-2 flex items-center gap-2 text-indigo-400">
-        <i class="fa-solid fa-trophy"></i> Active Tournaments
+      <h3 class="text-lg font-bold text-red-400 border-b border-gray-700 pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-plus"></i> Host New Match
       </h3>
-      <div id="tournamentList" class="text-center py-6 text-gray-500 text-sm italic">
-        No live matches available right now.
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs text-gray-400 font-medium">Match Title</label>
+          <input id="matchTitle" type="text" placeholder="e.g., Weekend Special" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-red-500 text-white">
+        </div>
+        <div class="flex gap-2">
+          <div class="flex-1">
+            <label class="text-xs text-gray-400 font-medium">Entry Fee (₹)</label>
+            <input id="matchEntry" type="number" placeholder="10" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-red-500 text-white">
+          </div>
+          <div class="flex-1">
+            <label class="text-xs text-gray-400 font-medium">Prize Pool (₹)</label>
+            <input id="matchPrize" type="number" placeholder="35" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-red-500 text-white">
+          </div>
+        </div>
+        <button id="createMatchBtn" class="w-full bg-red-600 hover:bg-red-500 py-2.5 rounded-xl text-sm font-bold tracking-wide transition shadow">Publish Tournament</button>
       </div>
     </section>
 
-    <!-- Global Live Chat Section -->
-    <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 space-y-3">
-      <h3 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
-        <i class="fa-solid fa-comments"></i> Global Live Chat
-      </h3>
-      <div class="flex gap-2">
-        <input type="text" placeholder="Type a message..." class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-white">
-        <button class="bg-indigo-600 hover:bg-indigo-500 px-4 rounded-xl transition">
-          <i class="fa-solid fa-paper-plane"></i>
-        </button>
-      </div>
-    </section>
-
-    <!-- Follow Other Players Section -->
-    <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 space-y-3">
-      <h3 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
-        <i class="fa-solid fa-user-plus"></i> Follow Other Players
-      </h3>
-      <div class="flex gap-2">
-        <input type="text" placeholder="Enter Player Name..." class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-white">
-        <button class="bg-indigo-600 hover:bg-indigo-500 px-5 rounded-xl font-medium text-sm transition">Follow</button>
-      </div>
-    </section>
-
-    <!-- In-App Wallet Section -->
+    <!-- Users Withdrawal Requests Monitor -->
     <section class="bg-gray-800 p-5 rounded-2xl shadow-lg border border-gray-700 space-y-4">
-      <h3 class="text-lg font-bold border-b border-gray-700 pb-2 flex items-center gap-2 text-indigo-400">
-        <i class="fa-solid fa-wallet"></i> In-App Wallet
+      <h3 class="text-lg font-bold text-red-400 border-b border-gray-700 pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-hand-holding-dollar"></i> Withdrawal Requests
       </h3>
-      
-      <div class="bg-gray-900 p-3 rounded-xl flex justify-between items-center border border-gray-700">
-        <span class="text-gray-400 text-sm">Available Balance:</span>
-        <span id="walletBalance" class="text-xl font-bold text-green-400">₹0</span>
-      </div>
-
-      <!-- Add Demo Money -->
-      <div class="space-y-1.5">
-        <label class="text-xs text-gray-400 font-medium">Add Demo Money (₹)</label>
-        <div class="flex gap-2">
-          <input type="number" value="100" class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-indigo-500">
-          <button class="bg-green-600 hover:bg-green-500 px-5 rounded-xl text-sm font-medium transition">Deposit</button>
-        </div>
-      </div>
-
-      <!-- Withdraw Money System -->
-      <div class="space-y-1.5">
-        <label class="text-xs text-gray-400 font-medium">Withdraw Money (₹)</label>
-        <div class="flex gap-2">
-          <input id="withdrawAmount" type="number" placeholder="Min ₹50" class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-indigo-500 text-white">
-          <button id="withdrawBtn" class="bg-red-600 hover:bg-red-500 px-5 rounded-xl text-sm font-medium transition">Withdraw</button>
-        </div>
-        <p id="withdrawError" class="text-xs text-red-400 font-medium mt-1 hidden"></p>
-      </div>
-
-      <div class="flex justify-between items-center pt-2 text-sm text-gray-400">
-        <span>Room: <strong class="text-white">0000</strong></span>
-        <button class="bg-gray-700 hover:bg-gray-600 px-4 py-1.5 rounded-lg text-xs text-white font-medium transition">Leave</button>
+      <div id="adminWithdrawalsList" class="text-center py-6 text-gray-500 text-sm italic">
+        No pending withdrawal requests.
       </div>
     </section>
 
   </main>
 
   <script>
-    // --- YOUR INTEGRATED FIREBASE CONFIGURATION ---
+    // --- INTEGRATED FIREBASE CONFIGURATION ---
     const firebaseConfig = {
       apiKey: "AIzaSyDJcvicOzv-lrqDp9ALDsB5WRvsmg0RgS8",
       authDomain: "ludo-janong.firebaseapp.com",
@@ -144,53 +95,60 @@
         firebase.initializeApp(firebaseConfig);
     }
 
-    // References for Auth
     const auth = firebase.auth();
     const database = firebase.database();
 
-    // --- GOOGLE SIGN-IN LOGIC ---
+    // DOM Elements
     const googleSignInBtn = document.getElementById('googleSignInBtn');
-    const playerName = document.getElementById('playerName');
-    const userAvatar = document.getElementById('userAvatar');
-    const defaultAvatar = document.getElementById('defaultAvatar');
+    const adminProfile = document.getElementById('adminProfile');
+    const adminName = document.getElementById('adminName');
+    const adminAvatar = document.getElementById('adminAvatar');
+    const createMatchBtn = document.getElementById('createMatchBtn');
 
+    // --- GOOGLE SIGN-IN FOR ADMIN ---
     googleSignInBtn.addEventListener('click', () => {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
         .then((result) => {
           const user = result.user;
-          // UI update user details ke sath
-          playerName.textContent = user.displayName;
-          userAvatar.src = user.photoURL;
-          userAvatar.classList.remove('hidden');
-          defaultAvatar.classList.add('hidden');
-          alert("Welcome " + user.displayName + "!");
+          adminName.textContent = user.displayName;
+          adminAvatar.src = user.photoURL;
+          adminProfile.classList.remove('hidden');
+          googleSignInBtn.classList.add('hidden');
+          alert("Admin Verified: " + user.displayName);
         })
         .catch((error) => {
-          console.error("Login Failed: ", error.message);
-          alert("Login fail ho gaya: " + error.message);
+          console.error("Admin Login Error: ", error.message);
+          alert("Admin login fail: " + error.message);
         });
     });
 
-    // --- WALLET WITHDRAWAL VALIDATION LOGIC ---
-    const withdrawInput = document.getElementById('withdrawAmount');
-    const withdrawBtn = document.getElementById('withdrawBtn');
-    const errorMsg = document.getElementById('withdrawError');
+    // --- CREATE TOURNAMENT LOGIC ---
+    createMatchBtn.addEventListener('click', () => {
+      const title = document.getElementById('matchTitle').value;
+      const entry = document.getElementById('matchEntry').value;
+      const prize = document.getElementById('matchPrize').value;
 
-    withdrawBtn.addEventListener('click', () => {
-      const amount = parseFloat(withdrawInput.value);
-      
-      if (isNaN(amount) || withdrawInput.value === "") {
-        errorMsg.textContent = "Please enter an amount.";
-        errorMsg.classList.remove('hidden');
-      } else if (amount < 50) {
-        errorMsg.textContent = "Minimum withdrawal limit ₹50 hai.";
-        errorMsg.classList.remove('hidden');
-      } else {
-        errorMsg.classList.add('hidden');
-        alert("Withdrawal request of ₹" + amount + " submitted successfully!");
-        // Yahan par aap database me request push kar sakte hain
+      if (!title || !entry || !prize) {
+        alert("Please fill all tournament fields.");
+        return;
       }
+
+      // Saving tournament data directly to Firebase Realtime Database
+      const tournamentId = database.ref().child('tournaments').push().key;
+      database.ref('tournaments/' + tournamentId).set({
+        title: title,
+        entryFee: "₹" + entry,
+        prizePool: "₹" + prize,
+        status: "active"
+      }).then(() => {
+        alert("Tournament Published Successfully!");
+        document.getElementById('matchTitle').value = "";
+        document.getElementById('matchEntry').value = "";
+        document.getElementById('matchPrize').value = "";
+      }).catch((err) => {
+        alert("Database error: " + err.message);
+      });
     });
   </script>
 </body>
